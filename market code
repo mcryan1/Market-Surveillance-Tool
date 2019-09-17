@@ -1,0 +1,29 @@
+import pandas_datareader.data as web
+from datetime import datetime
+
+#enter lookback dates YYYY,MM,DD
+start = datetime(2019, 9, 1)
+
+end = datetime(2019, 9, 13)
+
+#enter in stock ticker and/or data source
+info = web.DataReader('ALDR', 'yahoo', start, end)
+
+#seperate volume column
+volume = info['Volume']
+
+#find the mean volume, round, and calculate a 5% increase in volume
+def Average(volume):
+    return sum(volume)/len(volume)
+
+average = round(Average(volume))
+
+f_average = ((average *.5) + average)
+
+#generate the alert
+Alert = info[info["Volume"]>f_average]
+
+
+print('The outsized trading volume in the issuer during the lookback period :')
+print('______________________________________________________________________')
+Alert
